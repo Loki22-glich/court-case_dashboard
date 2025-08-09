@@ -99,6 +99,9 @@ python app.py
 Go to:
 
 cpp
+
+
+
 Copy code
 http://127.0.0.1:5000
 Example Use
@@ -109,6 +112,8 @@ Dashboard displays the case details.
 Next time you search the same case, it will load instantly from cache.json.
 
 Notes
+
+
 Ensure ChromeDriver is installed and matches your Chrome browser version.
 Clear cache.json if you want to fetch updated case data from the website.
 Website structure changes may require small adjustments in fetch_cases.py.
