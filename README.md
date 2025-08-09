@@ -53,11 +53,8 @@ json
 Code Overview
 1. fetch_cases.py
 Handles Selenium automation to visit the court website.
-
 Fills in the case type, number, and year.
-
 Extracts results from the table using BeautifulSoup.
-
 Returns results to be displayed or saved in cache.
 
 2. app.py
@@ -78,9 +75,7 @@ Allows basic styling for readability.
 
 📌 Why Use a Cache File?
 Speeds up repeated queries
-
 Reduces server load on the court website
-
 Prevents unnecessary Selenium launches
 
 
@@ -108,18 +103,12 @@ Copy code
 http://127.0.0.1:5000
 Example Use
 Select a Case Type (e.g., CRLA).
-
 Enter case number and year.
-
 Click "Search".
-
 Dashboard displays the case details.
-
 Next time you search the same case, it will load instantly from cache.json.
 
 Notes
 Ensure ChromeDriver is installed and matches your Chrome browser version.
-
 Clear cache.json if you want to fetch updated case data from the website.
-
 Website structure changes may require small adjustments in fetch_cases.py.
