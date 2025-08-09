@@ -113,7 +113,34 @@ Next time you search the same case, it will load instantly from cache.json.
 
 Notes
 
-
 Ensure ChromeDriver is installed and matches your Chrome browser version.
 Clear cache.json if you want to fetch updated case data from the website.
 Website structure changes may require small adjustments in fetch_cases.py.
+
+
+flowchart TD
+    A[Start Script] --> B[Select Court & Case Type]
+    B --> C[Enter Case Number & Year]
+    C --> D[Open Court Website]
+    D --> E[User Manually Enters Captcha]
+    E --> F[Submit Form]
+    F --> G[Scrape Case Details]
+    G --> H[Store Data in Cache File]
+    H --> I[Display Results to User]
+
+
+⚠️ Important Notes
+This project retrieves real-time case data from the court’s public portal by automating form selection and data scraping.
+
+Captcha input is manual — the user must enter it themselves when prompted. This ensures compliance with legal and ethical guidelines, as automated captcha-solving is restricted.
+
+Once the captcha is entered and the form is submitted, the script proceeds to fetch and cache the case details for faster future access.
+
+
+Legend
+
+Manual Step → Entering captcha
+
+Automated Steps → Everything else from court selection to scraping and displaying data
+
+Cache File → A .json file created to store fetched data locally so the same case details can be displayed instantly without reloading the site.
