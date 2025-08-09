@@ -1,129 +1,125 @@
-🏛 Court Case Dashboard
-A Flask + Selenium based dashboard to fetch and display court case details from official High Court websites.
-This project automates form submissions, retrieves case data, and shows it in a user-friendly format.
+# Court Case Dashboard
 
-📌 Features
-Automated Data Fetching using Selenium.
+This project is a **Python + Selenium + Flask** based dashboard that fetches case details from an Indian High Court website (in this setup, tested with Telangana High Court) and displays them in a user-friendly format.
 
-Dynamic Search by case type, number, and filing year.
+It also implements **local caching** to avoid repeatedly fetching the same data, improving speed and reducing website load.
 
-Caching to store previously fetched results (reduces repeated requests).
+---
 
-Flask Web Interface for easy access in any browser.
+## Features
 
-📂 Project Structure
-bash
-Copy code
+- **Automated case search** using Selenium.
+- **Web scraping** to extract case details.
+- **Local cache system** to store previously fetched results.
+- **Flask web interface** to view and filter results.
+- **Error handling** for missing data or unexpected site behavior.
+
+---
+
+## Folder / File Structure
+
 court-case_dashboard/
 │
-├── app.py               # Main Flask application
-├── scraper.py           # Selenium automation script
-├── cache.json           # Stores fetched case data
-├── requirements.txt     # Python dependencies
+├── app.py # Flask web server
+├── fetch_cases.py # Selenium scraping script
+├── cache.json # Stores cached results to avoid re-fetching
 ├── templates/
-│   ├── index.html        # Main input form UI
-│   └── results.html      # Page to display results
-└── README.md             # This file
-⚙️ How It Works
-User enters search details (case type, number, filing year) in the web form.
+│ └── dashboard.html # HTML template for displaying cases
+├── static/ # (Optional) CSS, JS, images
+└── README.md # Project documentation
 
-Flask sends the details to scraper.py.
 
-Selenium opens the court website and fills in the form automatically.
+---
 
-Case details are extracted and stored in cache.json.
+## How Caching Works
 
-Next time the same case is searched, data is loaded directly from cache (faster & avoids website load).
+The `cache.json` file is a **local data storage** that keeps a record of all the fetched case details in JSON format.  
 
-📜 File-by-File Explanation
-app.py
-The heart of the project.
+- When you request a case:
+  - First, the program **checks** if it exists in `cache.json`.
+  - If **found**, it loads from cache (much faster).
+  - If **not found**, it fetches from the court website, then saves the result in the cache for future use.
 
-Runs the Flask server.
-
-Handles routes:
-
-/ → Shows the search form.
-
-/results → Displays fetched case data.
-
-Calls the scraper to get new results if the case isn’t in the cache.
-
-scraper.py
-Uses Selenium WebDriver to:
-
-Open the High Court website.
-
-Select case type from dropdown.
-
-Enter case number & filing year.
-
-Click submit and scrape the table data.
-
-Returns the extracted case details back to Flask.
-
-cache.json
-Stores previously fetched case details in JSON format:
-
+**Example cache.json:**
 json
-Copy code
 {
-  "CRLA-123-2023": {
-    "case_type": "CRLA",
-    "case_number": "123",
-    "year": "2023",
+  "CRLA-1234-2023": {
+    "petitioner": "John Doe",
+    "respondent": "State of Telangana",
     "status": "Pending",
-    "next_hearing": "2025-09-15"
+    "last_hearing": "2025-08-01"
   }
 }
-💡 Why Cache?
+Code Overview
+1. fetch_cases.py
+Handles Selenium automation to visit the court website.
 
-If you search the same case again, the scraper won’t run — data is fetched instantly.
+Fills in the case type, number, and year.
 
-Reduces server load and prevents unnecessary requests to the court website.
+Extracts results from the table using BeautifulSoup.
 
-templates/index.html
-Contains the HTML form for user input.
+Returns results to be displayed or saved in cache.
 
-Has dropdown for case type, text inputs for case number & year.
+2. app.py
+Runs a Flask web app.
 
-templates/results.html
-Displays case details in a clean table format.
+Routes:
 
-🚀 How to Run Locally
-Clone the repo
+/ → Home page with form to enter case details.
 
+/search → Processes the form, checks cache, fetches if needed.
+
+Passes data to dashboard.html for display.
+
+3. dashboard.html
+Displays the case details in a table format.
+
+Allows basic styling for readability.
+
+📌 Why Use a Cache File?
+Speeds up repeated queries
+
+Reduces server load on the court website
+
+Prevents unnecessary Selenium launches
+
+
+Installation & Setup
+1. Clone the repository
 bash
 Copy code
-git clone https://github.com/your-username/court-case_dashboard.git
+git clone https://github.com/<your-username>/court-case_dashboard.git
 cd court-case_dashboard
-Install dependencies
-
+2. Install dependencies
 bash
 Copy code
 pip install -r requirements.txt
-Run the app
+(Requirements file should include Flask, Selenium, BeautifulSoup, requests, etc.)
 
+3. Run the Flask app
 bash
 Copy code
 python app.py
-Open in browser
+4. Open in browser
+Go to:
 
 cpp
 Copy code
 http://127.0.0.1:5000
-🛠 Requirements
-Python 3.8+
+Example Use
+Select a Case Type (e.g., CRLA).
 
-Flask
+Enter case number and year.
 
-Selenium
+Click "Search".
 
-ChromeDriver (matching your Chrome version)
+Dashboard displays the case details.
 
-📌 Future Improvements
-Add pagination support.
+Next time you search the same case, it will load instantly from cache.json.
 
-Improve error handling if the court site is down.
+Notes
+Ensure ChromeDriver is installed and matches your Chrome browser version.
 
-Support for multiple states’ High Courts.
+Clear cache.json if you want to fetch updated case data from the website.
+
+Website structure changes may require small adjustments in fetch_cases.py.
